@@ -25,7 +25,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -38,7 +37,7 @@ import java.util.TimeZone;
 public class FixMessageEncoder extends MessageToByteEncoder<FixMessageBuilder> {
 
     private static final TimeZone UTC = TimeZone.getTimeZone("UTC");
-    private static final Charset CHARSET = StandardCharsets.US_ASCII;
+    public static final Charset CHARSET = Charset.forName("US-ASCII");
     private static final String UTC_TIMESTAMP_WITH_MILLIS_PATTERN = "yyyyMMdd-HH:mm:ss.SSS";
     private static final ThreadLocal<DateFormat> sdf = new ThreadLocal<DateFormat>() {
         @Override

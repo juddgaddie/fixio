@@ -24,7 +24,6 @@ import io.netty.handler.codec.DecoderException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -81,9 +80,9 @@ public class FixMessageDecoderTest {
     private List<Object> decode(String message) throws Exception {
         String[] tags = message.split("\u0001");
 
-        List<Object> result = new ArrayList<>();
+        List<Object> result = new ArrayList<Object>();
         for (String tag : tags) {
-            decoder.decode(null, Unpooled.wrappedBuffer(tag.getBytes(StandardCharsets.US_ASCII)), result);
+            decoder.decode(null, Unpooled.wrappedBuffer(tag.getBytes(FixMessageEncoder.CHARSET)), result);
         }
         return result;
     }

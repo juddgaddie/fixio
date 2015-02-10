@@ -35,7 +35,7 @@ class PriceStreamingApp extends FixApplicationAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PriceStreamingApp.class);
     private final BlockingQueue<Quote> quoteQueue;
-    private final Map<String, ChannelHandlerContext> subscriptions = new ConcurrentHashMap<>();
+    private final Map<String, ChannelHandlerContext> subscriptions = new ConcurrentHashMap<String, ChannelHandlerContext>();
 
     public PriceStreamingApp(BlockingQueue<Quote> quoteQueue) {
         this.quoteQueue = quoteQueue;
@@ -66,7 +66,7 @@ class PriceStreamingApp extends FixApplicationAdapter {
     }
 
     private void stopStreaming(ChannelHandlerContext ctx) {
-        ArrayList<String> requestsToCancel = new ArrayList<>(subscriptions.size());
+        ArrayList<String> requestsToCancel = new ArrayList<String>(subscriptions.size());
         for (Map.Entry<String, ChannelHandlerContext> entry : subscriptions.entrySet()) {
             if (entry.getValue() == ctx) {
                 requestsToCancel.add(entry.getKey());
@@ -81,17 +81,17 @@ class PriceStreamingApp extends FixApplicationAdapter {
     @Override
     public void onMessage(ChannelHandlerContext ctx, FixMessage msg, List<Object> out) throws Exception {
         String reqId;
-        switch (msg.getMessageType()) {
-            case MessageTypes.QUOTE_REQUEST:
-                reqId = msg.getString(FieldType.QuoteReqID);
-                subscriptions.put(reqId, ctx);
-                LOGGER.debug("Subscribed with QuoteReqID={}", reqId);
-                break;
-            case MessageTypes.QUOTE_CANCEL:
-                reqId = msg.getString(FieldType.QuoteReqID);
-                subscriptions.remove(reqId);
-                LOGGER.debug("Unsubscribed with QuoteReqID={}", reqId);
-                break;
+        String s = msg.getMessageType();
+        if (MessageTypes.QUOTE_REQUEST.equals(s)) {
+            reqId = msg.getString(FieldType.QuoteReqID);
+            subscriptions.put(reqId, ctx);
+            LOGGER.debug("Subscribed with QuoteReqID={}", reqId);
+
+        } else if (MessageTypes.QUOTE_CANCEL.equals(s)) {
+            reqId = msg.getString(FieldType.QuoteReqID);
+            subscriptions.remove(reqId);
+            LOGGER.debug("Unsubscribed with QuoteReqID={}", reqId);
+
         }
     }
 

@@ -24,7 +24,6 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.DecoderException;
 import io.netty.handler.codec.MessageToMessageDecoder;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -111,7 +110,7 @@ public class FixMessageDecoder extends MessageToMessageDecoder<ByteBuf> {
 
     private void appendField(int tag, byte[] value, int offset, int valueLength) {
         if (message == null) {
-            String strValue = new String(value, offset, Math.min(10, valueLength), StandardCharsets.US_ASCII);
+            String strValue = new String(value, offset, Math.min(10, valueLength), FixMessageEncoder.CHARSET);
             if (valueLength > 10)                                   {
                 strValue += "...";
             }

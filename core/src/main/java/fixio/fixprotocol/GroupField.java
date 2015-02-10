@@ -17,7 +17,6 @@ package fixio.fixprotocol;
 
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -31,7 +30,7 @@ public class GroupField implements FixMessageFragment<List<Group>> {
 
     protected GroupField(int tagNum, int expectedSize) {
         this.tagNum = tagNum;
-        groups = new ArrayList<>(expectedSize);
+        groups = new ArrayList<Group>(expectedSize);
     }
 
     public GroupField(int tagNum) {

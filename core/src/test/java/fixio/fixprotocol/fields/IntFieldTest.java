@@ -15,13 +15,13 @@
  */
 package fixio.fixprotocol.fields;
 
+import fixio.netty.codec.FixMessageEncoder;
 import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.Random;
 
-import static java.nio.charset.StandardCharsets.US_ASCII;
 import static org.junit.Assert.assertArrayEquals;
 
 public class IntFieldTest {
@@ -34,7 +34,7 @@ public class IntFieldTest {
         IntField field = new IntField(tag, value);
         byte[] bytes = field.getBytes();
 
-        assertArrayEquals(String.valueOf(value).getBytes(US_ASCII), bytes);
+        assertArrayEquals(String.valueOf(value).getBytes(FixMessageEncoder.CHARSET), bytes);
     }
 
     @Test(expected = ParseException.class)

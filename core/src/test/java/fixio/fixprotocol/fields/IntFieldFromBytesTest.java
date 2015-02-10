@@ -15,6 +15,7 @@
  */
 package fixio.fixprotocol.fields;
 
+import fixio.netty.codec.FixMessageEncoder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +24,6 @@ import org.junit.runners.Parameterized;
 import java.util.Arrays;
 import java.util.Random;
 
-import static java.nio.charset.StandardCharsets.US_ASCII;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
@@ -63,7 +63,7 @@ public class IntFieldFromBytesTest {
     @Before
     public void setUp() throws Exception {
         tagNum = new Random().nextInt(1000) + 1;
-        intField = new IntField(tagNum, string.getBytes(US_ASCII), offset, length);
+        intField = new IntField(tagNum, string.getBytes(FixMessageEncoder.CHARSET), offset, length);
     }
 
     @Test

@@ -27,7 +27,7 @@ import java.util.List;
 
 class PriceReadingApp extends FixApplicationAdapter {
 
-    public static final int MAX_QUOTE_COUNT = 300_000;
+    public static final int MAX_QUOTE_COUNT = 300000;
     private static final Logger LOGGER = LoggerFactory.getLogger(PriceReadingApp.class);
     private int counter;
     private long startTimeNanos;
@@ -43,12 +43,12 @@ class PriceReadingApp extends FixApplicationAdapter {
     @Override
     public void onMessage(ChannelHandlerContext ctx, FixMessage msg, List<Object> out) throws Exception {
         assert (msg != null) : "Message can't be null";
-        switch (msg.getMessageType()) {
-            case MessageTypes.QUOTE:
-                onQuote(msg);
-                break;
-            default:
-                return;
+        String s = msg.getMessageType();
+        if (MessageTypes.QUOTE.equals(s)) {
+            onQuote(msg);
+
+        } else {
+            return;
         }
         if (counter % 10000 == 0) {
             LOGGER.debug("Read {} Quotes", counter);

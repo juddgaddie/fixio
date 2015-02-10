@@ -23,7 +23,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 public class QuickFixServer {
 
-    private final ArrayBlockingQueue<Quote> quoteQueue = new ArrayBlockingQueue<>(8192);
+    private final ArrayBlockingQueue<Quote> quoteQueue = new ArrayBlockingQueue<Quote>(8192);
     private Thread generator;
     private QuoteGeneratorTask generatorTask;
     private Acceptor acceptor;

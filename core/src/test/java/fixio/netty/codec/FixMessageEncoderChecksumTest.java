@@ -21,7 +21,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
@@ -42,7 +41,7 @@ public class FixMessageEncoderChecksumTest {
     }
 
     public FixMessageEncoderChecksumTest(String str, int offset, int expectedChecksum) {
-        this.byteBuf = Unpooled.wrappedBuffer(str.replaceAll("\\|", "\u0001").getBytes(StandardCharsets.US_ASCII));
+        this.byteBuf = Unpooled.wrappedBuffer(str.replaceAll("\\|", "\u0001").getBytes(FixMessageEncoder.CHARSET));
         this.offset = offset;
         this.expectedChecksum = expectedChecksum;
     }

@@ -15,9 +15,9 @@
  */
 package fixio.fixprotocol.fields;
 
-import java.text.ParseException;
+import fixio.netty.codec.FixMessageEncoder;
 
-import static java.nio.charset.StandardCharsets.US_ASCII;
+import java.text.ParseException;
 
 public class IntField extends AbstractField<Integer> {
 
@@ -42,7 +42,7 @@ public class IntField extends AbstractField<Integer> {
         for (int i = index; i < offset + length; i++) {
             int digit = (bytes[i] - '0');
             if (digit > 9 || digit < 0) {
-                throw new ParseException("Unparseable int: " + new String(bytes, offset, length, US_ASCII), i);
+                throw new ParseException("Unparseable int: " + new String(bytes, offset, length, FixMessageEncoder.CHARSET), i);
             }
             tempValue = tempValue * 10 + digit;
         }
@@ -61,7 +61,7 @@ public class IntField extends AbstractField<Integer> {
 
     @Override
     public byte[] getBytes() {
-        return String.valueOf(value).getBytes(US_ASCII);
+        return String.valueOf(value).getBytes(FixMessageEncoder.CHARSET);
     }
 
     public int intValue() {

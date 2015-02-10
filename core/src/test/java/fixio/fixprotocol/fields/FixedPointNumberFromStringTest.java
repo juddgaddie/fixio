@@ -15,6 +15,7 @@
  */
 package fixio.fixprotocol.fields;
 
+import fixio.netty.codec.FixMessageEncoder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +24,6 @@ import org.junit.runners.Parameterized;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
-import static java.nio.charset.StandardCharsets.US_ASCII;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
@@ -61,7 +61,7 @@ public class FixedPointNumberFromStringTest {
 
     @Before
     public void setUp() throws Exception {
-        value = new FixedPointNumber(string.getBytes(US_ASCII), offset, length);
+        value = new FixedPointNumber(string.getBytes(FixMessageEncoder.CHARSET), offset, length);
     }
 
     @Test

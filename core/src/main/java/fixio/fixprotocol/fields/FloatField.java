@@ -15,7 +15,7 @@
  */
 package fixio.fixprotocol.fields;
 
-import static java.nio.charset.StandardCharsets.US_ASCII;
+import fixio.netty.codec.FixMessageEncoder;
 
 public class FloatField extends AbstractField<FixedPointNumber> {
 
@@ -39,7 +39,7 @@ public class FloatField extends AbstractField<FixedPointNumber> {
     @Override
     public byte[] getBytes() {
         String s = value.toString();
-        return s.getBytes(US_ASCII);
+        return s.getBytes(FixMessageEncoder.CHARSET);
     }
 
     public float floatValue() {

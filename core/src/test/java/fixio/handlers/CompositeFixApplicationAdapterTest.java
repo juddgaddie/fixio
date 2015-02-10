@@ -32,7 +32,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.mockito.Matchers.same;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class CompositeFixApplicationAdapterTest {
@@ -57,7 +58,7 @@ public class CompositeFixApplicationAdapterTest {
         adapter = new CompositeFixApplicationAdapter(
                 Arrays.asList(messageValidator1, messageValidator2),
                 Arrays.asList(messageHandler1, messageHandler2, messageHandler3));
-        out = new ArrayList<>();
+        out = new ArrayList<Object>();
     }
 
     @Test

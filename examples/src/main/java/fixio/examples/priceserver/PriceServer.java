@@ -26,7 +26,7 @@ public class PriceServer {
 
     public static final int DEFAULT_PORT = 10101;
 
-    private final ArrayBlockingQueue<Quote> quoteQueue = new ArrayBlockingQueue<>(8192);
+    private final ArrayBlockingQueue<Quote> quoteQueue = new ArrayBlockingQueue<Quote>(8192);
 
     private final FixServer server;
     private Thread generator;

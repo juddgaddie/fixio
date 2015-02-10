@@ -39,7 +39,7 @@ public class FixMessageBuilderImpl implements FixMessage, FixMessageBuilder {
     public FixMessageBuilderImpl(int expectedBodyFieldCount) {
         header = new FixMessageHeader();
         trailer = new FixMessageTrailer();
-        body = new LinkedHashMap<>(expectedBodyFieldCount);
+        body = new LinkedHashMap<Integer, FixMessageFragment>(expectedBodyFieldCount);
     }
 
     /**
@@ -50,7 +50,7 @@ public class FixMessageBuilderImpl implements FixMessage, FixMessageBuilder {
         assert (trailer != null) : "FixMessageTrailer is expected";
         this.header = header;
         this.trailer = trailer;
-        body = new LinkedHashMap<>(DEFAULT_BODY_FIELD_COUNT);
+        body = new LinkedHashMap<Integer, FixMessageFragment>(DEFAULT_BODY_FIELD_COUNT);
     }
 
     /**
@@ -182,7 +182,7 @@ public class FixMessageBuilderImpl implements FixMessage, FixMessageBuilder {
 
     @Override
     public List<FixMessageFragment> getBody() {
-        return new ArrayList<>(body.values());
+        return new ArrayList<FixMessageFragment>(body.values());
     }
 
     @Override

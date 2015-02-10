@@ -15,7 +15,8 @@
  */
 package fixio.fixprotocol.fields;
 
-import java.nio.charset.StandardCharsets;
+import fixio.netty.codec.FixMessageEncoder;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,7 +24,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import static java.nio.charset.StandardCharsets.US_ASCII;
 
 public class UTCTimeOnlyField extends AbstractField<Long> {
 
@@ -98,7 +98,7 @@ public class UTCTimeOnlyField extends AbstractField<Long> {
     }
 
     private static void throwParseException(byte[] bytes, int errorOffset) throws ParseException {
-        throw new ParseException("Unparseable date: " + new String(bytes, StandardCharsets.US_ASCII), errorOffset);
+        throw new ParseException("Unparseable date: " + new String(bytes, FixMessageEncoder.CHARSET), errorOffset);
     }
 
     @Override
@@ -114,9 +114,9 @@ public class UTCTimeOnlyField extends AbstractField<Long> {
     public byte[] getBytes() {
         if (value % 1000 != 0) {
             // with millis
-            return FORMAT_WITH_MILLIS_THREAD_LOCAL.get().format(new Date(value)).getBytes(US_ASCII);
+            return FORMAT_WITH_MILLIS_THREAD_LOCAL.get().format(new Date(value)).getBytes(FixMessageEncoder.CHARSET);
         } else {
-            return FORMAT_THREAD_LOCAL.get().format(new Date(value)).getBytes(US_ASCII);
+            return FORMAT_THREAD_LOCAL.get().format(new Date(value)).getBytes(FixMessageEncoder.CHARSET);
         }
     }
 

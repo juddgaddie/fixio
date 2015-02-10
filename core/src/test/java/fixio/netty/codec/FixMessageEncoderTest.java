@@ -30,7 +30,6 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.Arrays;
 
-import static java.nio.charset.StandardCharsets.US_ASCII;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -153,7 +152,7 @@ public class FixMessageEncoderTest {
     }
 
     private void assertResult(String expectedString) {
-        final String string = new String(out.array(), out.arrayOffset(), out.readableBytes(), US_ASCII);
+        final String string = new String(out.array(), out.arrayOffset(), out.readableBytes(), FixMessageEncoder.CHARSET);
         assertEquals(expectedString, string);
     }
 }

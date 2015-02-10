@@ -17,10 +17,9 @@ package fixio.fixprotocol.fields;
 
 import fixio.fixprotocol.DataType;
 import fixio.fixprotocol.FieldType;
+import fixio.netty.codec.FixMessageEncoder;
 
 import java.text.ParseException;
-
-import static java.nio.charset.StandardCharsets.US_ASCII;
 
 public class FieldFactory {
 
@@ -37,7 +36,7 @@ public class FieldFactory {
         try {
             switch (fieldType.type()) {
                 case STRING:
-                    return (F) new StringField(tagNum, new String(value, offset, length, US_ASCII));
+                    return (F) new StringField(tagNum, new String(value, offset, length, FixMessageEncoder.CHARSET));
                 case BOOLEAN:
                     if (value[offset] == 'Y') {
                         return (F) new BooleanField(tagNum, true);
@@ -58,11 +57,13 @@ public class FieldFactory {
                 case UTCTIMESTAMP:
                     return (F) new UTCTimestampField(tagNum, value, offset, length);
                 default:
-                    return (F) new StringField(tagNum, new String(value, offset, length, US_ASCII));
+                    return (F) new StringField(tagNum, new String(value, offset, length, FixMessageEncoder.CHARSET));
 //                    throw new UnsupportedOperationException("Unsupported field type: " + fieldType
 //                            + '(' + fieldType.type() + ')');
             }
-        } catch (ParseException | NumberFormatException e) {
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Invalid value for field " + fieldType + ": " + e.getMessage(), e);
+        } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid value for field " + fieldType + ": " + e.getMessage(), e);
         }
     }

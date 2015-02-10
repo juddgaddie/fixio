@@ -15,7 +15,7 @@
  */
 package fixio.fixprotocol.fields;
 
-import java.nio.charset.StandardCharsets;
+import fixio.netty.codec.FixMessageEncoder;
 
 public class StringField extends AbstractField<String> {
 
@@ -32,6 +32,6 @@ public class StringField extends AbstractField<String> {
 
     @Override
     public byte[] getBytes() {
-        return value.getBytes(StandardCharsets.US_ASCII);
+        return value.getBytes(FixMessageEncoder.CHARSET);
     }
 }

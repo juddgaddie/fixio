@@ -32,11 +32,11 @@ public class Group implements FieldListBuilder<Group> {
     private final Map<Integer, FixMessageFragment> contents;
 
     public Group(int expectedSize) {
-        this.contents = new LinkedHashMap<>(expectedSize);
+        this.contents = new LinkedHashMap<Integer, FixMessageFragment>(expectedSize);
     }
 
     public Group() {
-        this.contents = new LinkedHashMap<>(DEFAULT_GROUP_SIZE);
+        this.contents = new LinkedHashMap<Integer, FixMessageFragment>(DEFAULT_GROUP_SIZE);
     }
 
     public void add(FixMessageFragment element) {
@@ -169,7 +169,7 @@ public class Group implements FieldListBuilder<Group> {
     }
 
     public List<FixMessageFragment> getContents() {
-        return new ArrayList<>(contents.values());
+        return new ArrayList<FixMessageFragment>(contents.values());
     }
     
     @Override

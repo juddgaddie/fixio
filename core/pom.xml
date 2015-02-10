@@ -123,6 +123,13 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <classifier>${classifier}</classifier>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

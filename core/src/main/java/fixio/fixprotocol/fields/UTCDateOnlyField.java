@@ -15,6 +15,8 @@
  */
 package fixio.fixprotocol.fields;
 
+import fixio.netty.codec.FixMessageEncoder;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,8 +24,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
-
-import static java.nio.charset.StandardCharsets.US_ASCII;
 
 /**
  * Field representing Date represented in UTC (Universal Time Coordinated, also known as "GMT") in YYYYMMDD format.
@@ -96,7 +96,7 @@ public class UTCDateOnlyField extends AbstractField<Long> {
     }
 
     private static void throwParseException(byte[] bytes, int errorOffset) throws ParseException {
-        throw new ParseException("Unparseable date: " + new String(bytes, US_ASCII), errorOffset);
+        throw new ParseException("Unparseable date: " + new String(bytes, FixMessageEncoder.CHARSET), errorOffset);
     }
 
     @Override
@@ -110,7 +110,7 @@ public class UTCDateOnlyField extends AbstractField<Long> {
 
     @Override
     public byte[] getBytes() {
-        return FORMAT_THREAD_LOCAL.get().format(new Date(value)).getBytes(US_ASCII);
+        return FORMAT_THREAD_LOCAL.get().format(new Date(value)).getBytes(FixMessageEncoder.CHARSET);
     }
 
 }

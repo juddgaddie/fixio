@@ -15,12 +15,12 @@
  */
 package fixio.fixprotocol.fields;
 
+import fixio.netty.codec.FixMessageEncoder;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Random;
 
-import static java.nio.charset.StandardCharsets.US_ASCII;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
@@ -41,7 +41,7 @@ public class FloatFieldTest {
     public void testGetBytes() throws Exception {
         byte[] bytes = field.getBytes();
 
-        byte[] expectedBytes = value.toString().getBytes(US_ASCII);
+        byte[] expectedBytes = value.toString().getBytes(FixMessageEncoder.CHARSET);
 
         assertArrayEquals(expectedBytes, bytes);
     }

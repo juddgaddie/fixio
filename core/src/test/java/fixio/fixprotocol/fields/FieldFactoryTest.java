@@ -17,6 +17,7 @@ package fixio.fixprotocol.fields;
 
 import fixio.fixprotocol.DataType;
 import fixio.fixprotocol.FieldType;
+import fixio.netty.codec.FixMessageEncoder;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -24,7 +25,6 @@ import java.util.Calendar;
 import java.util.Random;
 import java.util.TimeZone;
 
-import static java.nio.charset.StandardCharsets.US_ASCII;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.apache.commons.lang3.RandomStringUtils.randomAscii;
 import static org.junit.Assert.*;
@@ -34,13 +34,13 @@ public class FieldFactoryTest {
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidTagField() throws Exception {
         String value = randomAlphanumeric(5);
-        FieldFactory.valueOf(0, value.getBytes(US_ASCII));
+        FieldFactory.valueOf(0, value.getBytes(FixMessageEncoder.CHARSET));
     }
 
     @Test
     public void testValueOfString() throws Exception {
         String value = randomAscii(5);
-        StringField field = FieldFactory.valueOf(FieldType.MsgType.tag(), value.getBytes(US_ASCII));
+        StringField field = FieldFactory.valueOf(FieldType.MsgType.tag(), value.getBytes(FixMessageEncoder.CHARSET));
 
         assertEquals("tagnum", FieldType.MsgType.tag(), field.getTagNum());
         assertEquals("value", value, field.getValue());
@@ -49,8 +49,8 @@ public class FieldFactoryTest {
     @Test
     public void testBigTagNumber() throws Exception {
         String value = randomAscii(5);
-        int tagNum = 100_000;
-        StringField field = FieldFactory.valueOf(tagNum, value.getBytes(US_ASCII));
+        int tagNum = 100000;
+        StringField field = FieldFactory.valueOf(tagNum, value.getBytes(FixMessageEncoder.CHARSET));
 
         assertEquals("tagnum", tagNum, field.getTagNum());
         assertEquals("value", value, field.getValue());
@@ -69,7 +69,7 @@ public class FieldFactoryTest {
     @Test
     public void testValueOfInt() throws Exception {
         int value = new Random().nextInt(1000);
-        IntField field = FieldFactory.valueOf(FieldType.EncryptMethod.tag(), String.valueOf(value).getBytes(US_ASCII));
+        IntField field = FieldFactory.valueOf(FieldType.EncryptMethod.tag(), String.valueOf(value).getBytes(FixMessageEncoder.CHARSET));
 
         assertEquals("tagnum", FieldType.EncryptMethod.tag(), field.getTagNum());
         assertEquals("value", value, field.getValue().intValue());
@@ -80,7 +80,7 @@ public class FieldFactoryTest {
     public void testValueOfLength() throws Exception {
         int value = new Random().nextInt(1000);
 
-        IntField field = FieldFactory.valueOf(FieldType.BodyLength.tag(), String.valueOf(value).getBytes(US_ASCII));
+        IntField field = FieldFactory.valueOf(FieldType.BodyLength.tag(), String.valueOf(value).getBytes(FixMessageEncoder.CHARSET));
 
         assertEquals("tagnum", FieldType.BodyLength.tag(), field.getTagNum());
         assertEquals("value", value, field.getValue().intValue());
@@ -91,7 +91,7 @@ public class FieldFactoryTest {
     public void testValueOfSeqNum() throws Exception {
         int value = new Random().nextInt(1000);
 
-        IntField field = FieldFactory.valueOf(FieldType.RefSeqNum.tag(), String.valueOf(value).getBytes(US_ASCII));
+        IntField field = FieldFactory.valueOf(FieldType.RefSeqNum.tag(), String.valueOf(value).getBytes(FixMessageEncoder.CHARSET));
 
         assertEquals("tagnum", FieldType.RefSeqNum.tag(), field.getTagNum());
         assertEquals("value", value, field.getValue().intValue());
@@ -102,7 +102,7 @@ public class FieldFactoryTest {
     public void testValueOfNumInGroup() throws Exception {
         int value = new Random().nextInt(1000);
 
-        IntField field = FieldFactory.valueOf(FieldType.NoMDEntries.tag(), String.valueOf(value).getBytes(US_ASCII));
+        IntField field = FieldFactory.valueOf(FieldType.NoMDEntries.tag(), String.valueOf(value).getBytes(FixMessageEncoder.CHARSET));
 
         assertEquals("tagnum", FieldType.NoMDEntries.tag(), field.getTagNum());
         assertEquals("value", value, field.getValue().intValue());
@@ -113,7 +113,7 @@ public class FieldFactoryTest {
     public void testValueOfFloat() throws Exception {
         BigDecimal value = BigDecimal.valueOf(new Random().nextInt()).movePointLeft(5);
 
-        FloatField field = FieldFactory.valueOf(FieldType.SettlCurrFxRate.tag(), value.toPlainString().getBytes(US_ASCII));
+        FloatField field = FieldFactory.valueOf(FieldType.SettlCurrFxRate.tag(), value.toPlainString().getBytes(FixMessageEncoder.CHARSET));
 
         assertEquals("tagnum", FieldType.SettlCurrFxRate.tag(), field.getTagNum());
         assertEquals("value", value.doubleValue(), field.getValue().doubleValue(), 0.0);
@@ -124,7 +124,7 @@ public class FieldFactoryTest {
     public void testValueOfQty() throws Exception {
         BigDecimal value = BigDecimal.valueOf(new Random().nextInt()).movePointLeft(5);
 
-        FloatField field = FieldFactory.valueOf(FieldType.OrderQty.tag(), value.toPlainString().getBytes(US_ASCII));
+        FloatField field = FieldFactory.valueOf(FieldType.OrderQty.tag(), value.toPlainString().getBytes(FixMessageEncoder.CHARSET));
 
         assertEquals("tagnum", FieldType.OrderQty.tag(), field.getTagNum());
         assertEquals("value", value.doubleValue(), field.getValue().doubleValue(), 0.0);
@@ -135,7 +135,7 @@ public class FieldFactoryTest {
     public void testValueOfPrice() throws Exception {
         BigDecimal value = BigDecimal.valueOf(new Random().nextInt()).movePointLeft(5);
 
-        FloatField field = FieldFactory.valueOf(FieldType.MktBidPx.tag(), value.toPlainString().getBytes(US_ASCII));
+        FloatField field = FieldFactory.valueOf(FieldType.MktBidPx.tag(), value.toPlainString().getBytes(FixMessageEncoder.CHARSET));
 
         assertEquals("tagnum", FieldType.MktBidPx.tag(), field.getTagNum());
         assertEquals("value", value.doubleValue(), field.getValue().doubleValue(), 0.0);
@@ -145,7 +145,7 @@ public class FieldFactoryTest {
     @Test
     public void testValueOfBooleanTrue() throws Exception {
         String value = "Y";
-        BooleanField field = FieldFactory.valueOf(FieldType.PossDupFlag.tag(), value.getBytes(US_ASCII));
+        BooleanField field = FieldFactory.valueOf(FieldType.PossDupFlag.tag(), value.getBytes(FixMessageEncoder.CHARSET));
 
         assertEquals("tagnum", FieldType.PossDupFlag.tag(), field.getTagNum());
         assertSame("value", Boolean.TRUE, field.getValue());
@@ -155,7 +155,7 @@ public class FieldFactoryTest {
     @Test
     public void testValueOfBooleanFalse() throws Exception {
         String value = "N";
-        BooleanField field = FieldFactory.valueOf(FieldType.PossDupFlag.tag(), value.getBytes(US_ASCII));
+        BooleanField field = FieldFactory.valueOf(FieldType.PossDupFlag.tag(), value.getBytes(FixMessageEncoder.CHARSET));
 
         assertEquals("tagnum", FieldType.PossDupFlag.tag(), field.getTagNum());
         assertSame("value", Boolean.FALSE, field.getValue());
@@ -165,7 +165,7 @@ public class FieldFactoryTest {
     @Test
     public void testValueOfUtcTimestampWithMillis() throws Exception {
         String value = "19980604-08:03:31.537";
-        UTCTimestampField field = FieldFactory.valueOf(FieldType.OrigTime.tag(), value.getBytes(US_ASCII));
+        UTCTimestampField field = FieldFactory.valueOf(FieldType.OrigTime.tag(), value.getBytes(FixMessageEncoder.CHARSET));
 
         assertEquals("tagnum", FieldType.OrigTime.tag(), field.getTagNum());
 
@@ -186,7 +186,7 @@ public class FieldFactoryTest {
     @Test
     public void testValueOfUtcTimestampNoMillis() throws Exception {
         String value = "19980604-08:03:31";
-        UTCTimestampField field = FieldFactory.valueOf(FieldType.OrigTime.tag(), value.getBytes(US_ASCII));
+        UTCTimestampField field = FieldFactory.valueOf(FieldType.OrigTime.tag(), value.getBytes(FixMessageEncoder.CHARSET));
 
         assertEquals("tagnum", FieldType.OrigTime.tag(), field.getTagNum());
 

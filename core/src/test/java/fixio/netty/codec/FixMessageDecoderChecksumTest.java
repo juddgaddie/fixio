@@ -24,7 +24,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -63,9 +62,9 @@ public class FixMessageDecoderChecksumTest {
     private static List<Object> decode(String message) throws Exception {
         String[] tags = message.split("\\|");
 
-        List<Object> result = new ArrayList<>();
+        List<Object> result = new ArrayList<Object>();
         for (String tag : tags) {
-            decoder.decode(null, Unpooled.wrappedBuffer(tag.getBytes(StandardCharsets.US_ASCII)), result);
+            decoder.decode(null, Unpooled.wrappedBuffer(tag.getBytes(FixMessageEncoder.CHARSET)), result);
         }
         return result;
     }

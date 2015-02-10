@@ -52,7 +52,7 @@
         private final DataType type;
         private final String[] enumValues;
 
-        private static final HashMap&lt;Integer,FieldType&gt; TYPES = new HashMap&lt;&gt;();
+        private static final HashMap&lt;Integer,FieldType&gt; TYPES = new HashMap&lt;Integer,FieldType&gt;();
 
         static {
             for (FieldType fieldType : FieldType.values()) {

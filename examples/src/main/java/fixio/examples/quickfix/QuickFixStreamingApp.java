@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class QuickFixStreamingApp implements Application {
     private static final Logger LOGGER = LoggerFactory.getLogger(QuickFixStreamingApp.class);
     private final BlockingQueue<Quote> quoteQueue;
-    private final Map<String, SessionID> subscriptions = new ConcurrentHashMap<>();
+    private final Map<String, SessionID> subscriptions = new ConcurrentHashMap<String, SessionID>();
 
     public QuickFixStreamingApp(BlockingQueue<Quote> quoteQueue) {
         this.quoteQueue = quoteQueue;
@@ -81,18 +81,17 @@ public class QuickFixStreamingApp implements Application {
     public void fromApp(Message message, SessionID sessionID) throws FieldNotFound, IncorrectDataFormat, IncorrectTagValue, UnsupportedMessageType {
         try {
             String msgType = message.getHeader().getString(35);
-            switch (msgType) {
-                case MsgType.QUOTE_REQUEST:
-                    String reqId = message.getString(QuoteReqID.FIELD);
-                    subscriptions.put(reqId, sessionID);
+            if (MsgType.QUOTE_REQUEST.equals(msgType)) {
+                String reqId = message.getString(QuoteReqID.FIELD);
+                subscriptions.put(reqId, sessionID);
 
-                    LOGGER.debug("Subscribed with QuoteReqID={}", reqId);
-                    break;
-                case MsgType.QUOTE_CANCEL:
-                    reqId = message.getString(QuoteReqID.FIELD);
-                    subscriptions.remove(reqId);
-                    LOGGER.debug("Unsubscribed with QuoteReqID={}", reqId);
-                    break;
+                LOGGER.debug("Subscribed with QuoteReqID={}", reqId);
+
+            } else if (MsgType.QUOTE_CANCEL.equals(msgType)) {
+                String reqId;
+                reqId = message.getString(QuoteReqID.FIELD);
+                subscriptions.remove(reqId);
+                LOGGER.debug("Unsubscribed with QuoteReqID={}", reqId);
 
             }
         } catch (FieldNotFound fieldNotFound) {
@@ -101,7 +100,7 @@ public class QuickFixStreamingApp implements Application {
     }
 
     private void stopStreaming(SessionID sessionID) {
-        ArrayList<String> requestsToCancel = new ArrayList<>(subscriptions.size());
+        ArrayList<String> requestsToCancel = new ArrayList<String>(subscriptions.size());
         for (Map.Entry<String, SessionID> entry : subscriptions.entrySet()) {
             if (entry.getValue() == sessionID) {
                 requestsToCancel.add(entry.getKey());
