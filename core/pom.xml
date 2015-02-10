@@ -31,6 +31,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.jar.classifier>${classifier}</maven.jar.classifier>
     </properties>
 
     <dependencies>
