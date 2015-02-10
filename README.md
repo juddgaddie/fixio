@@ -1,4 +1,4 @@
-fixio - FIX Protocol Support for Netty [![Build Status](https://travis-ci.org/kpavlov/fixio.png?branch=master)](https://travis-ci.org/kpavlov/fixio)
+fixio - FIX Protocol Support for Netty [![Build Status](https://travis-ci.org/kpavlov/fixio.png?branch=master)](https://travis-ci.org/kpavlov/fixio.svg?branch=java7)
 =====
 
 # Overview #
