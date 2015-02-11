@@ -64,7 +64,7 @@ public class ServerSessionHandlerTest {
     @Before
     public void setUp() {
         handler = new ServerSessionHandler(fixApplication, authenticator, new InMemorySessionRepository());
-        outgoingMessages = new ArrayList<>();
+        outgoingMessages = new ArrayList<Object>();
 
         logonMsg = new FixMessageBuilderImpl(MessageTypes.LOGON);
         FixMessageHeader header = logonMsg.getHeader();

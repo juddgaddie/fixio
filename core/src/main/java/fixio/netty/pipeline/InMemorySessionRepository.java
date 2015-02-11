@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemorySessionRepository implements SessionRepository {
 
-    private final ConcurrentHashMap<SessionId, FixSession> sessions = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<SessionId, FixSession> sessions = new ConcurrentHashMap<SessionId, FixSession>();
 
     @Override
     public FixSession createSession(FixMessageHeader header) {
