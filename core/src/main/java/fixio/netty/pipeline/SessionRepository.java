@@ -19,57 +19,11 @@ import fixio.fixprotocol.FixMessageHeader;
 import fixio.fixprotocol.session.FixSession;
 import fixio.fixprotocol.session.SessionId;
 
-import java.util.concurrent.ConcurrentHashMap;
+public interface SessionRepository {
 
-public class SessionRepository {
+    FixSession createSession(FixMessageHeader header);
 
-    private static final SessionRepository INSTANCE = new SessionRepository();
+    FixSession getSession(FixMessageHeader header);
 
-    private final ConcurrentHashMap<SessionId, FixSession> sessions = new ConcurrentHashMap<SessionId, FixSession>();
-
-    public static SessionRepository getInstance() {
-        return INSTANCE;
-    }
-
-    private SessionRepository() {
-    }
-
-    public FixSession createSession(FixMessageHeader header) {
-        SessionId id = createSessionId(header);
-
-        FixSession session = FixSession.newBuilder()
-                .beginString(header.getBeginString())
-                .senderCompId(header.getSenderCompID())
-                .senderSubId(header.getSenderSubID())
-                .targetCompId(header.getTargetCompID())
-                .targetSubId(header.getTargetSubID())
-                .build();
-
-        session.setNextIncomingMessageSeqNum(1);
-        session.setNextOutgoingMessageSeqNum(1);
-
-        sessions.put(id, session);
-        return session;
-    }
-
-    /**
-     * Returns existing {@link FixSession} from the repository, or null if no such session is present.
-     *
-     * @param header FixMessageHeader containing session information
-     * @return null if no session found in repository
-     */
-    public FixSession getSession(FixMessageHeader header) {
-        SessionId id = createSessionId(header);
-
-        return sessions.get(id);
-    }
-
-    private static SessionId createSessionId(FixMessageHeader header) {
-        return new SessionId(
-                header.getSenderCompID(),
-                header.getTargetCompID(),
-                header.getSenderSubID(),
-                header.getTargetSubID()
-        );
-    }
+    void removeSession(SessionId sessionId);
 }

@@ -47,6 +47,8 @@ public class ServerChannelPipelineIntegrationTest {
     private FixAuthenticator authenticator;
     private LocalServerChannel serverChannel;
     private ChannelPipeline pipeline;
+    @Mock
+    private SessionRepository sessionRepository;
 
     @Before
     public void setUp() throws Exception {
@@ -57,8 +59,9 @@ public class ServerChannelPipelineIntegrationTest {
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         final FixAcceptorChannelInitializer<Channel> channelInitializer = new FixAcceptorChannelInitializer<Channel>(
                 workerGroup,
+                new FixApplicationAdapter(),
                 authenticator,
-                new FixApplicationAdapter()
+                sessionRepository
         );
 
         serverChannel = (LocalServerChannel) b.group(new NioEventLoopGroup())
